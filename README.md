@@ -4,7 +4,7 @@
 
 Perfect for *feeding to an LLM, data analysis, or simply reading offline*, `reddit2text` offers a straightforward interface to access and convert content from Reddit.
 
-### Table of contents
+## Table of contents
 - [Features](#features)
 - [Installation](#installation)
 - [Quickstart](#quickstart)
@@ -15,7 +15,7 @@ Perfect for *feeding to an LLM, data analysis, or simply reading offline*, `redd
 
 <a id="features"></a>
 
-### Features
+## Features
 - Convert any Reddit post into structured text format.
 - Include all comments, with support for specifying maximum comment depth.
 - Configurable comment delimiter for visual separation of nested comments.
@@ -25,7 +25,7 @@ Perfect for *feeding to an LLM, data analysis, or simply reading offline*, `redd
 
 <a id="installation"></a>
 
-### Installation
+## Installation
 Install reddit2text using pip
 ```sh
 pip3 install reddit2text
@@ -33,7 +33,7 @@ pip3 install reddit2text
 
 <a id="quickstart"></a>
 
-### Quickstart
+## Quickstart
 **First**, you need to register a Reddit application to obtain a **client_id** and **client_secret**. Follow the instructions on [Reddit's API documentation](https://www.reddit.com/wiki/api) to set up your application.
 
 Then, replace the `client_id`, `client_secret`, and `user_agent` with your credentials.
@@ -62,7 +62,7 @@ print(output)
 
 <a id="configs"></a>
 
-### Extra Configuration
+## Extra Configuration
 - **max_comment_depth**: Maximum depth of comments to output. Includes the top-most comment. Defaults to `None` or `-1` to include all.
 - **comment_delim**: String/character used to indent comments according to their nesting level. Defaults to `|` to mimic reddit.
 
@@ -76,10 +76,10 @@ r2t = Reddit2Text(
 
 <a id="contributions"></a>
 
-### Contributions
+## Contributions
 Contributions to reddit2text are welcome. Please submit pull requests or issues to our GitHub repository.
 
 <a id="license"></a>
 
-### License
+## License
 reddit2text is released under the MIT License. See the LICENSE file for more details.
