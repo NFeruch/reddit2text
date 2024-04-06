@@ -2,8 +2,8 @@ name: Deploy to PyPI
 
 on:
   push:
-    branches:
-      - main  # Or your default branch
+    tags:
+      - 'v*'
 
 jobs:
   build-and-publish:
