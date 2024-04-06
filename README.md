@@ -1,14 +1,15 @@
 # Reddit2Text
 
-`reddit2text` is a Python library designed to effortlessly **transform any Reddit post and its comments into a clean, readable text format**.
+`reddit2text` is *the* Python library designed to effortlessly **transform any Reddit thread into clean, readable text data**.
 
-Perfect for *feeding to an LLM, data analysis, or simply reading offline*, `reddit2text` offers a straightforward interface to access and convert content from Reddit.
+Perfect for *feeding to an LLM, performing textual/data analysis, or simply archiving for offline use*, `reddit2text` offers a straightforward interface to access and convert content from Reddit.
 
-## Table of contents
+## Table of Contents
 - [Features](#features)
 - [Installation](#installation)
 - [Quickstart](#quickstart)
   - [Example Code](#example)
+  - [Example Output](#output)
 - [Configs](#configs)
 - [Contributions](#contributions)
 - [License](#license)
@@ -16,17 +17,18 @@ Perfect for *feeding to an LLM, data analysis, or simply reading offline*, `redd
 <a id="features"></a>
 
 ## Features
-- Convert any Reddit post into structured text format.
-- Include all comments, with support for specifying maximum comment depth.
-- Configurable comment delimiter for visual separation of nested comments.
+- Convert any Reddit thread (the post + all its comments) into structured text.
+- Include all comments, with the ability to specify the maximum comment depth.
+- Configure a custom comment delimiter, for visual separation of nested comments.
 
-> **Want Something Added?**
-> Simply ***open an issue*** here on github and tell us what should be added to the next release!
+> **Have a Feature Idea?**
+>
+> Simply ***open an issue on github*** and tell us what should be added to the next release!
 
 <a id="installation"></a>
 
 ## Installation
-Install reddit2text using pip
+Easy install using pip
 ```sh
 pip3 install reddit2text
 ```
@@ -34,11 +36,11 @@ pip3 install reddit2text
 <a id="quickstart"></a>
 
 ## Quickstart
-**First**, you need to register a Reddit application to obtain a **client_id** and **client_secret**. Follow the instructions on [Reddit's API documentation](https://www.reddit.com/wiki/api) to set up your application.
+**First**, you need to create a Reddit app to get your **client_id** and **client_secret**. Follow the instructions on [Reddit's API documentation](https://www.reddit.com/wiki/api) to set up your application.
 
-Then, replace the `client_id`, `client_secret`, and `user_agent` with your credentials.
+**Then**, replace the `client_id`, `client_secret`, and `user_agent` with your credentials.
 
-The user agent can be anything you like, but we recommend following this convention that follows Reddit's guidelines: `'<app type>:<app name>:<version> (by <your username>)'`
+The user agent can be anything you like, but we recommend following this convention according to Reddit's guidelines: `'<app type>:<app name>:<version> (by <your username>)'`
 
 <a id="example"></a>
 
@@ -53,12 +55,17 @@ r2t = Reddit2Text(
     user_agent='script:my_app:v1.0 (by u/reddit2text)'
 )
 
-# The URL must have the post ID after the /comments/ to work
+# The URL must have the post ID after the /comments/ to work, e.g. `1buyr0g`
 URL = 'https://www.reddit.com/r/MadeMeSmile/comments/1buyr0g/ryan_reynolds_being_wholesome/'
 
 output = r2t.textualize_post(URL)
 print(output)
 ```
+
+<a id="output"></a>
+
+Here is an example (truncated) output from the above code!
+https://pastebin.com/mmHFJtcc
 
 <a id="configs"></a>
 
@@ -69,7 +76,7 @@ print(output)
 ```python
 r2t = Reddit2Text(
     # credentials ...
-    max_comment_depth=3,  # all comment trees will be limited to a max of 3 replies
+    max_comment_depth=3,  # all comment chains will be limited to a max of 3 replies
     comment_delim='#'  # each comment level will be preceded by multiples of this string
 )
 ```
