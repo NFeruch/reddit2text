@@ -10,7 +10,8 @@ Perfect for *feeding to an LLM, performing textual/data analysis, or simply arch
 - [Quickstart](#quickstart)
   - [Example Code](#example)
   - [Example Output](#output)
-- [Configs](#configs)
+- [Extra Settings](#configs)
+- [Planned Features](#planned)
 - [Contributions](#contributions)
 - [License](#license)
 
@@ -44,12 +45,12 @@ The user agent can be anything you like, but we recommend following this convent
 
 <a id="example"></a>
 
-*Here's an example:*
+***This is enough to get started:***
 ```python
 from reddit2text import Reddit2Text
 
 r2t = Reddit2Text(
-    # example credentials
+    # replace with your actual creds
     client_id='123abc',
     client_secret='123abc',
     user_agent='script:my_app:v1.0 (by u/reddit2text)'
@@ -70,8 +71,10 @@ https://pastebin.com/mmHFJtcc
 <a id="configs"></a>
 
 ## Extra Configuration
-- **max_comment_depth**: Maximum depth of comments to output. Includes the top-most comment. Defaults to `None` or `-1` to include all.
-- **comment_delim**: String/character used to indent comments according to their nesting level. Defaults to `|` to mimic reddit.
+- **max_comment_depth**, `Optional[str]`:
+  - Maximum depth of comments to output. Includes the top-most comment. Defaults to `None` or `-1` to include all.
+- **comment_delim**, `str`:
+  - String/character used to indent comments according to their nesting level. Defaults to `|` to mimic reddit.
 
 ```python
 r2t = Reddit2Text(
@@ -80,6 +83,16 @@ r2t = Reddit2Text(
     comment_delim='#'  # each comment level will be preceded by multiples of this string
 )
 ```
+
+<a id="planned"></a>
+
+## Planned Features
+- Comprehensive Formatting/Saving
+  - Being able to save to a file location as .txt, .csv, .json, or to your clipboard!
+- Filtering/Sorting
+  - Filter/sort comments based on upvotes, author name, body content, number of replies, etc
+- Image/video support
+  - Enable mining of not just text threads, but also image and video posts
 
 <a id="contributions"></a>
 
