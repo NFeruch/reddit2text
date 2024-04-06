@@ -53,7 +53,10 @@ r2t = Reddit2Text(
     user_agent='script:my_app:v1.0 (by u/reddit2text)'
 )
 
-output = r2t.textualize_post('REDDIT_POST_URL')
+# The URL must have the post ID after the /comments/ to work
+URL = 'https://www.reddit.com/r/MadeMeSmile/comments/1buyr0g/ryan_reynolds_being_wholesome/'
+
+output = r2t.textualize_post(URL)
 print(output)
 ```
 
