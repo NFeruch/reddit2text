@@ -2,37 +2,37 @@ name: Deploy to PyPI
 
 on:
   push:
-    tags:
-      - 'v*'  # This will run for tags like v1.0.0
+    branches:
+      - main  # Or your default branch
 
 jobs:
   build-and-publish:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
+    - uses: actions/checkout@v2
 
-      - name: Set up Python
-        uses: actions/setup-python@v2
-        with:
-          python-version: '3.x'
+    - name: Set up Python
+      uses: actions/setup-python@v2
+      with:
+        python-version: '3.x'
 
-      - name: Install pypa/build
-        run: >
-          python -m
-          pip install
-          build
-          --user
+    - name: Install pypa/build
+      run: >
+        python -m
+        pip install
+        build
+        --user
 
-      - name: Build a binary wheel and a source tarball
-        run: >
-          python -m
-          build
-          --sdist
-          --wheel
-          --outdir dist/
+    - name: Build a binary wheel and a source tarball
+      run: >
+        python -m
+        build
+        --sdist
+        --wheel
+        --outdir dist/
 
-      - name: Publish the distribution 📦 to PyPI
-        uses: pypa/gh-action-pypi-publish@v1.4.2
-        with:
-          user: __token__
-          password: ${{ secrets.PYPI_API_TOKEN }}
+    - name: Publish the distribution 📦 to PyPI
+      uses: pypa/gh-action-pypi-publish@v1.4.2
+      with:
+        user: __token__
+        password: ${{ secrets.PYPI_API_TOKEN }}
