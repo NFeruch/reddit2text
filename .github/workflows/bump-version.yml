@@ -1,0 +1,38 @@
+name: Bump library version and tag
+
+on:
+  push:
+    branches:
+      - main  # Or your default branch
+
+jobs:
+  bump-version:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          fetch-depth: 0  # Ensures all history and tags are fetched
+
+      - name: Set up Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: '3.8'
+
+      - name: Install bump2version
+        run: pip install bump2version
+
+      - name: Bump version and push tag
+        run: |
+          bump2version patch --config-file .bumpversion.cfg
+        env:
+          GIT_COMMITTER_NAME: github-actions
+          GIT_COMMITTER_EMAIL: actions@github.com
+          GIT_AUTHOR_NAME: github-actions
+          GIT_AUTHOR_EMAIL: actions@github.com
+
+      - name: Push changes
+        run: |
+          git push
+          git push --tags
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
