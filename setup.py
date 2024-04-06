@@ -20,7 +20,7 @@ setup(
     long_description_content_type='text/markdown',  # Specify the LONG_DESCRIPTION is in Markdown
     packages=find_packages(),
     install_requires=[
-        'praw',  # Ensure you have listed all necessary dependencies
+        'praw',
     ],
     keywords=['python', 'reddit', 'text conversion', 'reddit api', 'praw', 'reddit to text', 'reddit comments', 'social media analysis'],
     classifiers=[
