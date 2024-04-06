@@ -1,1 +1,1 @@
-from .main import Client
+from .main import Reddit2Text
