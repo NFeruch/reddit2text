@@ -5,26 +5,15 @@
 Perfect for *feeding to an LLM, performing textual/data analysis, or simply archiving for offline use*, `reddit2text` offers a straightforward interface to access and convert content from Reddit.
 
 ## Table of Contents
-- [Features](#features)
 - [Installation](#installation)
 - [Quickstart](#quickstart)
   - [Example Code](#example)
   - [Example Output](#output)
 - [Extra Settings](#configs)
+- [Current Features](#features)
 - [Planned Features](#planned)
 - [Contributions](#contributions)
 - [License](#license)
-
-<a id="features"></a>
-
-## Features
-- Convert any Reddit thread (the post + all its comments) into structured text.
-- Include all comments, with the ability to specify the maximum comment depth.
-- Configure a custom comment delimiter, for visual separation of nested comments.
-
-> **Have a Feature Idea?**
->
-> Simply ***open an issue on github*** and tell me what should be added to the next release!
 
 <a id="installation"></a>
 
@@ -86,6 +75,17 @@ r2t = Reddit2Text(
 )
 ```
 
+<a id="features"></a>
+
+## Current Features
+- Convert any Reddit thread (the post + all its comments) into structured text.
+- Include all comments, with the ability to specify the maximum comment depth.
+- Configure a custom comment delimiter, for visual separation of nested comments.
+
+> **Have a Feature Idea?**
+>
+> Simply ***open an issue on github*** and tell me what should be added to the next release!
+
 <a id="planned"></a>
 
 ## Planned Features
@@ -95,6 +95,8 @@ r2t = Reddit2Text(
   - Filter/sort comments based on upvotes, author name, body content, number of replies, etc
 - Image/video support
   - Enable mining of not just text threads, but also image and video posts
+- CLI output
+  - Add a progress bar to the terminal for threads with a large amount of comments
 
 <a id="contributions"></a>
 
