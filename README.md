@@ -47,7 +47,7 @@ r2t = Reddit2Text(
     user_agent='script:my_app:v1.0 (by u/reddit2text)'
 )
 
-URL = 'https://www.reddit.com/r/MadeMeSmile/comments/1buyr0g/ryan_reynolds_being_wholesome/'
+URL = 'https://www.reddit.com/r/AskReddit/comments/1by3p2o/whats_the_stupidest_animal_and_how_has_it/'
 
 output = r2t.textualize_post(URL)
 print(output)
@@ -56,7 +56,7 @@ print(output)
 <a id="output"></a>
 
 Here is an example (truncated) output from the above code!
-https://pastebin.com/mmHFJtcc
+https://pastebin.com/niQTGbys
 
 <a id="configs"></a>
 
