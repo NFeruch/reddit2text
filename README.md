@@ -26,7 +26,7 @@ pip3 install reddit2text
 <a id="quickstart"></a>
 
 ## Quickstart
-#### **First**, you need to create a Reddit app to get your **client_id** and **client_secret**, in order to access the Reddit API.
+**First**, you need to create a Reddit app to get your **client_id** and **client_secret**, in order to access the Reddit API.
 > Here's a [visual step-by-step guide I created](https://scribehow.com/shared/Create_your_Reddit_API_app__sanm5Eo2Q_iudzfhFZLKJg) to do this! Alternatively, you can look at [Reddit's API documentation](https://www.reddit.com/wiki/api).
 
 
