@@ -2,7 +2,7 @@
 
 `reddit2text` is *the* Python library designed to effortlessly **transform any Reddit thread into clean, readable text data**.
 
-Perfect for *feeding to an LLM, performing textual/data analysis, or simply archiving for offline use*, `reddit2text` offers a straightforward interface to access and convert content from Reddit.
+Perfect for *prompting to an LLM, performing textual/data analysis, or simply archiving for offline use*, `reddit2text` offers a straightforward interface to access and convert content from Reddit.
 
 ## Table of Contents
 - [Installation](#installation)
