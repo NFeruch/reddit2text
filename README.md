@@ -63,7 +63,7 @@ https://pastebin.com/niQTGbys
 ## Extra Configuration
 - **max_comment_depth**, `Optional[str]`:
   - Maximum depth of comments to output. Includes the top-most comment. Defaults to `None` or `-1` to include all.
-- **comment_delim**, `str`:
+- **comment_delim**, `Optional[str]`:
   - String/character used to indent comments according to their nesting level. Defaults to `|` to mimic reddit.
 
 ```python
