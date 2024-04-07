@@ -24,7 +24,7 @@ Perfect for *feeding to an LLM, performing textual/data analysis, or simply arch
 
 > **Have a Feature Idea?**
 >
-> Simply ***open an issue on github*** and tell us what should be added to the next release!
+> Simply ***open an issue on github*** and tell me what should be added to the next release!
 
 <a id="installation"></a>
 
@@ -37,7 +37,9 @@ pip3 install reddit2text
 <a id="quickstart"></a>
 
 ## Quickstart
-**First**, you need to create a Reddit app to get your **client_id** and **client_secret**. Follow the instructions on [Reddit's API documentation](https://www.reddit.com/wiki/api) to set up your application.
+**First**, you need to create a Reddit app to get your **client_id** and **client_secret**.
+> Here's a [visual step-by-step guide I created](https://scribehow.com/shared/Create_your_Reddit_API_app__sanm5Eo2Q_iudzfhFZLKJg) to do this! Alternatively, you can look at [Reddit's API documentation](https://www.reddit.com/wiki/api).
+
 
 **Then**, replace the `client_id`, `client_secret`, and `user_agent` with your credentials.
 
@@ -97,7 +99,7 @@ r2t = Reddit2Text(
 <a id="contributions"></a>
 
 ## Contributions
-Contributions to reddit2text are welcome. Please submit pull requests or issues to our GitHub repository.
+Contributions to reddit2text are always welcomed! I'm just a person that made something I think is useful, so any help is appreciated. You can always submit a pull requests or add an issue to the GitHub repository.
 
 <a id="license"></a>
 
