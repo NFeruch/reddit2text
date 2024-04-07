@@ -83,7 +83,7 @@ r2t = Reddit2Text(
 
 > **Have a Feature Idea?**
 >
-> Simply ***open an issue on github*** and tell me what should be added to the next release!
+> Simply [*open an issue on github*](https://github.com/NFeruch/reddit2text/issues/new) and tell me what should be added to the next release!
 
 <a id="planned"></a>
 
