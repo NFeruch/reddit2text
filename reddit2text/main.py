@@ -1,4 +1,5 @@
 import praw
+import re
 from typing import Optional
 
 class Reddit2Text:
@@ -45,10 +46,10 @@ class Reddit2Text:
 			prefix = f"{self.comment_delim} " * depth
 
 			# Safe-guard for deleted comments where the author would be None
-			author = comment.author.name if comment.author else "deleted"
+			author = comment.author.name if comment.author else "[deleted]"
 			score = comment.score
 			upvotes_or_downvotes = 'upvotes' if score >= 0 else 'downvotes'
-			comment_body = comment.body.replace('\n', '\\n')  # Replace newlines to avoid breaking the tree structure
+			comment_body = re.sub(r'\n+', ' ', comment.body)  # Replace newlines to avoid breaking the tree structure
 
 			comments_str += f"{prefix}{author} ({score} {upvotes_or_downvotes}): {comment_body}\n"
 
@@ -60,30 +61,40 @@ class Reddit2Text:
 	def _process_original_post(self, post: praw.models.Submission) -> None:
 		# Fetch the title, author, upvotes, and post text
 		# OP's info
-		title = post.title
-		author = post.author.name if post.author else "deleted"
-		upvotes = post.score
-		selftext = post.selftext.replace('\n', ' ')  # Replace newlines to avoid breaking the structure
+		self.post_data = {
+			'title': post.title,
+			'author': post.author.name if post.author else "deleted",
+			'upvotes': post.score,
+			'selftext': re.sub(r'\n+', ' ', post.selftext),  # Replace newlines to avoid breaking the structure
+			'num_comments': post.num_comments
+		}
 
 		# Ensure all comments are fetched
-		post.comments.replace_more(limit=None)
+		if self.max_comment_depth != 0:
+			post.comments.replace_more(limit=None)
 
 		# Start building the final output string
-		original_post_output = f"title: {title}\nauthor/upvotes: {author}/{upvotes}\npost text: {selftext}\n\n"
+		original_post_output = f"Title: {self.post_data['title']}\nAuthor: {self.post_data['author']}\nUpvotes: {self.post_data['upvotes']}\n"
+		if self.post_data['selftext']:
+			original_post_output += f"Body text: {self.post_data['selftext']}\n"
 
 		return original_post_output
 
 	def textualize_post(self, url: str) -> str:
-		# Extract the post ID from the URL
-		post_id = url.split('/')[-3]
-		post = self._praw_reddit.submission(id=post_id)
+		# PRAW auto-handles extracting the post ID from the URL
+		# https://praw.readthedocs.io/en/stable/code_overview/models/submission.html
+		post = self._praw_reddit.submission(url=url)
+		self.post = post
 
 		# Convert the original post and all the comments to text individually
 		text_post = self._process_original_post(post)
-		text_comments = self._process_comments(post.comments)
+		# A max_comment_depth of 0 means only the original post will be returned
+		text_comments = ""
+		if self.max_comment_depth != 0:
+			text_comments = self._process_comments(post.comments)
 
 		# Combine the original post and comments into a single string
-		final_output = text_post + text_comments
+		final_output = text_post + f'\n{self.post_data["num_comments"]} Comments:\n--------\n' + text_comments
 
 		# Handle the output based on the user's preference
 		# self._handle_output(final_output)
