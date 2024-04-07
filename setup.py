@@ -1,7 +1,7 @@
 # clear && python3 setup.py sdist bdist_wheel && twine upload --skip-existing dist/* --verbose
 from setuptools import setup, find_packages
 
-VERSION = '0.0.8'  # Consider starting with a semantic versioning scheme
+VERSION = '0.0.9'  # Consider starting with a semantic versioning scheme
 DESCRIPTION = 'Convert Reddit posts to text'
 LONG_DESCRIPTION = """
 # Reddit2Text
