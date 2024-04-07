@@ -111,4 +111,4 @@ Contributions to reddit2text are always welcomed! I'm just a person that made so
 <a id="license"></a>
 
 ## License
-reddit2text is released under the MIT License. See the LICENSE file for more details.
+reddit2text is released under the Apache License 2.0. See the LICENSE file for more details.
