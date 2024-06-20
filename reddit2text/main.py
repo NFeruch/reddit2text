@@ -1,6 +1,6 @@
 import praw
 import re
-from typing import Optional, Literal
+from typing import Optional, Literal, Union, List
 import os
 from dotenv import load_dotenv
 
@@ -114,26 +114,30 @@ class Reddit2Text:
 
 		return original_post_output
 
-	def textualize_post(self, url: str) -> str:
-		# PRAW auto-handles extracting the post ID from the URL
-		# https://praw.readthedocs.io/en/stable/code_overview/models/submission.html
-		# print('Getting thread...')
-		thread = self._praw_reddit.submission(url=url)
+	def textualize_post(self, urls: Union[str, List[str]]) -> Union[str, List[str]]:
+		if isinstance(urls, str):
+				urls = [urls]
 
-		# Convert the original post and all the comments to text individually
-		# print('Processing thread...')
-		text_post = self._process_original_post(thread)
+		final_outputs = []
 
-		# Ensure all comments are fetched
-		# print('Processing comments...')
-		text_comments = self._process_comments(thread.comments)
+		for url in urls:
+				# PRAW auto-handles extracting the post ID from the URL
+				# https://praw.readthedocs.io/en/stable/code_overview/models/submission.html
+				thread = self._praw_reddit.submission(url=url)
 
-		comment_header = f'\n{self.post_data["num_comments"]} Comments:\n--------\n' if self.max_comment_depth != 0 else ''
+				# Convert the original post and all the comments to text individually
+				text_post = self._process_original_post(thread)
 
-		# Combine the original post and comments into a single string
-		final_output = text_post + comment_header + text_comments
+				# Ensure all comments are fetched
+				text_comments = self._process_comments(thread.comments)
 
-		# Handle the output based on the user's preference
-		# self._handle_output(final_output)
+				comment_header = f'\n{self.post_data["num_comments"]} Comments:\n--------\n' if self.max_comment_depth != 0 else ''
 
-		return final_output
+				# Combine the original post and comments into a single string
+				final_output = text_post + comment_header + text_comments
+
+				final_outputs.append(final_output)
+
+		if len(final_outputs) == 1:
+				return final_outputs[0]
+		return final_outputs
