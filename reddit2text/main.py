@@ -1,6 +1,7 @@
 import praw
 import re
 from typing import Optional, Literal
+from tqdm import tqdm
 import os
 from dotenv import load_dotenv
 
@@ -67,7 +68,7 @@ class Reddit2Text:
 		if self.max_comment_depth == 0:
 			return comments_str
 
-		for comment in comments:
+		for comment in tqdm(comments, desc=f"Processing comments at depth {depth}", unit="comment"):
 
 			# Skip any 'MoreComments' objects
 			if isinstance(comment, praw.models.MoreComments):
