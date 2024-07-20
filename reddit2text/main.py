@@ -9,14 +9,14 @@ load_dotenv()
 class Reddit2Text:
 	def __init__(
 		self,
-		client_id: str = None,
-		client_secret: str = None,
-		user_agent: str = None,
+		client_id: str | None = None,
+		client_secret: str | None = None,
+		user_agent: str | None = None,
 		*,
-		format: Optional[Literal['txt', 'json', 'csv']] = 'txt',
-		max_comment_depth: Optional[int] = None,
-		comment_delim: Optional[str] = "|",
-		save_output_to: Optional[str] = None
+		format: Literal['txt', 'json', 'csv'] = 'txt',
+		max_comment_depth: int | None = None,
+		comment_delim: str | None = "|",
+		save_output_to: str | None = None
 	) -> None:
 		"""
 		Parameters
@@ -49,7 +49,7 @@ class Reddit2Text:
 		self.comment_delim = comment_delim
 		self.save_output_to = save_output_to
 
-		self._praw_reddit = praw.Reddit(
+		self._praw_client = praw.Reddit(
 			client_id=self.client_id,
 			client_secret=self.client_secret,
 			user_agent=self.user_agent,
@@ -59,6 +59,9 @@ class Reddit2Text:
 		if self.save_output_to:
 			with open(self.save_output_to, 'w') as f:
 				f.write(output)
+
+	def _create_praw_submission_object(self, url: str) -> praw.models.Submission:
+		return self._praw_client.submission(url=url)
 
 	def _process_comments(self, comments: praw.models.comment_forest.CommentForest, depth: int = 1) -> str:
 		comments_str = ""
@@ -118,7 +121,7 @@ class Reddit2Text:
 		# PRAW auto-handles extracting the post ID from the URL
 		# https://praw.readthedocs.io/en/stable/code_overview/models/submission.html
 		# print('Getting thread...')
-		thread = self._praw_reddit.submission(url=url)
+		thread = self._praw_client.submission(url=url)
 
 		# Convert the original post and all the comments to text individually
 		# print('Processing thread...')
