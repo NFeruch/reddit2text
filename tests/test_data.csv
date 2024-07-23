@@ -1,23 +1,15 @@
-url,expected_output,data_entered_at
-https://www.reddit.com/r/help/comments/1190q79/how_to_unarchive_my_archived_posts_also_just_why/,"Title: How to unarchive my archived posts? Also, just why?
-Author: VeryNeuro-Bi-vergent
+url,expected_output
+https://www.reddit.com/r/reddit2text_testing/comments/1dkot3x/this_is_a_test_reddit_post_with_a_title_and_body/,"Title: This is a test reddit post with a title and body
+Author: reddit2text
 Upvotes: 1
-Body text: I know someone already asked about this, but it got deleted. I have a post on r/actuallesbians but I can't even reply to the comments because it's archived. Also, why did the mods add this feature? This is just my opinion, but I think it's a little silly. Shouldn't we be able to archive AND unarchive our posts if we want to?
+Body text: This is the body text. It contains 2 sentence!
 
-8 Comments:
+7 Comments:
 --------
-| DoTheDew (4 upvotes): Post are automatically archived after 6 months if the mods haven’t disabled archiving in their subreddit. It used to be that every single post on reddit was archived after 6 months, but now the mods can choose whether that happens in their subreddit or not.
-| | VeryNeuro-Bi-vergent (1 upvotes): Okay, so I'm assuming I can't undo the archive?
-| | | DoTheDew (2 upvotes): No, you can’t.
-| | | | VeryNeuro-Bi-vergent (1 upvotes): Dang well thanks for the info
-| raendrop (2 upvotes): Mods didn't add this feature. 6-month archiving has been the default on reddit for the longest time. But recently admins gave mods the option to opt their subreddits out of archiving. The reason for archiving is to reduce strain on the servers. It takes less processing power when something is in read-only mode. And six months is forever in internet time. Generally, there is no need to go back to a post that old, especially since reddit does not have a ""bump"" system. Most threads don't continue for more than a few days, a week at most. Also, most forums have rules against ""necro'ing"" threads (which archiving naturally prevents). More often than not, it's old new/ancient history and coming back to it after so much time just confuses the person you've replied to. And the way reddit works, no one else in the post will have any idea you've commented.
-| | VeryNeuro-Bi-vergent (1 upvotes): Thanks for the info
-| [deleted] (2 upvotes): I despise the fact that posts are automatically  archived after 6 months. I also hate that posts can’t be bumped. Ever since the pandemic happened a lot of people have been giving old shows a try for the first time and some have been rewatching popular old shows. I’m one of these people and the show I’m rewatching particularly has regained popularity with many people wanting to discuss or debate it, but when I Google anything about the show most of the subreddits that pop up are all archived. I’m new to Reddit so I don’t really have any interest starting my own discussions. I’d prefer to comment on the ones that have already been previously made. Frustrating!
-| A_J-MACHETE (1 upvotes): I hate that I'm now discoveing posts/threads from years ago that I can't comment or reply on. Actually, in one case, I managed to squeak in a comment on one just before it went ""archived""; waste of time. I used to have more of a life when these discussions were current, and now (with the pandemic putting the final nail on 31 years of music), all I have is time and a lifetime of unresolved curiosities.
-",2024-04-08 17:18:55.839991
-url,format,max_comment_depth,expected_output,data_entered_at
-https://www.reddit.com/r/help/comments/1190q79/how_to_unarchive_my_archived_posts_also_just_why/,text,0,"Title: How to unarchive my archived posts? Also, just why?
-Author: VeryNeuro-Bi-vergent
-Upvotes: 1
-Body text: I know someone already asked about this, but it got deleted. I have a post on r/actuallesbians but I can't even reply to the comments because it's archived. Also, why did the mods add this feature? This is just my opinion, but I think it's a little silly. Shouldn't we be able to archive AND unarchive our posts if we want to?
-",2024-04-08 17:23:34.781736
+| reddit2text (1 upvotes): this is another comment about dogs!
+| | reddit2text (1 upvotes): me too bro
+| | reddit2text (1 upvotes): I agree that dogs are cool
+| | reddit2text (1 upvotes): well actually I dislike dogs
+| | | reddit2text (1 upvotes): I think you are wrong
+| reddit2text (1 upvotes): This is a comment by the original poster
+| | reddit2text (1 upvotes): this is a nested comment under a top-level comment"
