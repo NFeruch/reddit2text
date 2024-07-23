@@ -67,19 +67,19 @@ class Reddit2Text:
 		if self.max_comment_depth == 0:
 			return comments_str
 
-		for comment in comments:
+		stack = [(comment, depth) for comment in comments if not isinstance(comment, praw.models.MoreComments)]
 
-			# Skip any 'MoreComments' objects
+		while stack:
+			comment, current_depth = stack.pop()
+
 			if isinstance(comment, praw.models.MoreComments):
 				continue
 
-			# Stop processing comments if depth exceeds max_comment_depth
-			if self.max_comment_depth not in (None, -1) and depth > self.max_comment_depth:
-				break
+			if self.max_comment_depth not in (None, -1) and current_depth > self.max_comment_depth:
+				continue
 
-			prefix = f"{self.comment_delim} " * depth
+			prefix = f"{self.comment_delim} " * current_depth
 
-			# Safe-guard for deleted comments where the author would be None
 			author = comment.author.name if comment.author else "[deleted]"
 			score = comment.score
 			upvotes_or_downvotes = 'upvotes' if score >= 0 else 'downvotes'
@@ -87,8 +87,8 @@ class Reddit2Text:
 
 			comments_str += f"{prefix}{author} ({score} {upvotes_or_downvotes}): {comment_body}\n"
 
-			# Recursively process the replies to each comment
-			comments_str += self._process_comments(comment.replies, depth + 1)
+			# Add the replies to the stack with increased depth
+			stack.extend([(reply, current_depth + 1) for reply in comment.replies if not isinstance(reply, praw.models.MoreComments)])
 
 		return comments_str
 
@@ -116,28 +116,30 @@ class Reddit2Text:
 
 	def textualize_post(self, urls: Union[str, List[str]]) -> Union[str, List[str]]:
 		if isinstance(urls, str):
-				urls = [urls]
+			urls = [urls]
 
 		final_outputs = []
 
 		for url in urls:
-				# PRAW auto-handles extracting the post ID from the URL
-				# https://praw.readthedocs.io/en/stable/code_overview/models/submission.html
-				thread = self._praw_reddit.submission(url=url)
+			# PRAW auto-handles extracting the post ID from the URL
+			thread = self._praw_reddit.submission(url=url)
 
-				# Convert the original post and all the comments to text individually
-				text_post = self._process_original_post(thread)
+			# Convert the original post to text
+			text_post = self._process_original_post(thread)
 
-				# Ensure all comments are fetched
+			# Ensure all comments are fetched
+			text_comments = ""
+			if self.max_comment_depth != 0:
+				thread.comments.replace_more(limit=None)
 				text_comments = self._process_comments(thread.comments)
 
-				comment_header = f'\n{self.post_data["num_comments"]} Comments:\n--------\n' if self.max_comment_depth != 0 else ''
+			comment_header = f'\n{self.post_data["num_comments"]} Comments:\n--------\n' if self.max_comment_depth != 0 else ''
 
-				# Combine the original post and comments into a single string
-				final_output = text_post + comment_header + text_comments
+			# Combine the original post and comments into a single string
+			final_output = text_post + comment_header + text_comments
 
-				final_outputs.append(final_output)
+			final_outputs.append(final_output)
 
 		if len(final_outputs) == 1:
-				return final_outputs[0]
+			return final_outputs[0]
 		return final_outputs
