@@ -3,141 +3,154 @@ import re
 from typing import Optional, Literal, Union, List
 import os
 from dotenv import load_dotenv
+import sys
 
 load_dotenv()
 
 class Reddit2Text:
-	def __init__(
-		self,
-		client_id: str = None,
-		client_secret: str = None,
-		user_agent: str = None,
-		*,
-		format: Optional[Literal['txt', 'json', 'csv']] = 'txt',
-		max_comment_depth: Optional[int] = None,
-		comment_delim: Optional[str] = "|",
-		save_output_to: Optional[str] = None
-	) -> None:
-		"""
-		Parameters
-		----------
-		client_id : str
-			Generated with your Reddit API app
-		client_secret : str
-			Generated with your Reddit API app
-		user_agent : str
-			Tells the Reddit API who you are, of the form, `<app type>:<app name>:<version> (by <your username>)`
-		format : Literal['txt', 'json', 'csv'], optional
-			How you want the Reddit thread to be displayed, by default 'txt'
-		max_comment_depth : int, optional
-			Maximum depth of comments to output, including the top-most comment. Choose 0 to exclude all comments, by default None or -1 to include all
-		comment_delim : str, optional
-			String/character used to indent comments according to their nesting level, by default "|"
-		save_output_to : str, optional
-			The location in which you want to save the output, by default None
-		"""
-		# Optionally fetch the credentials from the environment variables
-		self.client_id = client_id or os.getenv('REDDIT_CLIENT_ID')
-		self.client_secret = client_secret or os.getenv('REDDIT_CLIENT_SECRET')
-		self.user_agent = user_agent or os.getenv('REDDIT_USER_AGENT')
+  def __init__(
+    self,
+    client_id: str = None,
+    client_secret: str = None,
+    user_agent: str = None,
+    *,
+    format: Optional[Literal['txt', 'json', 'csv']] = 'txt',
+    max_comment_depth: Optional[int] = None,
+    comment_delim: Optional[str] = "|",
+    save_output_to: Optional[str] = None
+  ) -> None:
+    """
+    Parameters
+    ----------
+    client_id : str
+      Generated with your Reddit API app
+    client_secret : str
+      Generated with your Reddit API app
+    user_agent : str
+      Tells the Reddit API who you are, of the form, `<app type>:<app name>:<version> (by <your username>)`
+    format : Literal['txt', 'json', 'csv'], optional
+      How you want the Reddit thread to be displayed, by default 'txt'
+    max_comment_depth : int, optional
+      Maximum depth of comments to output, including the top-most comment. Choose 0 to exclude all comments, by default None or -1 to include all
+    comment_delim : str, optional
+      String/character used to indent comments according to their nesting level, by default "|"
+    save_output_to : str, optional
+      The location in which you want to save the output, by default None
+    """
+    # Optionally fetch the credentials from the environment variables
+    self.client_id = client_id or os.getenv('REDDIT_CLIENT_ID')
+    self.client_secret = client_secret or os.getenv('REDDIT_CLIENT_SECRET')
+    self.user_agent = user_agent or os.getenv('REDDIT_USER_AGENT')
 
-		if not all((self.client_id, self.client_secret, self.user_agent)):
-			raise ValueError("Please provide client_id, client_secret, and user_agent")
+    if not all((self.client_id, self.client_secret, self.user_agent)):
+      raise ValueError("Please provide client_id, client_secret, and user_agent")
 
-		self.format = format
-		self.max_comment_depth = max_comment_depth
-		self.comment_delim = comment_delim
-		self.save_output_to = save_output_to
+    self.format = format
+    self.max_comment_depth = max_comment_depth
+    self.comment_delim = comment_delim
+    self.save_output_to = save_output_to
 
-		self._praw_reddit = praw.Reddit(
-			client_id=self.client_id,
-			client_secret=self.client_secret,
-			user_agent=self.user_agent,
-		)
+    self._praw_reddit = praw.Reddit(
+      client_id=self.client_id,
+      client_secret=self.client_secret,
+      user_agent=self.user_agent,
+    )
 
-	def _handle_output(self, output: str) -> None:
-		if self.save_output_to:
-			with open(self.save_output_to, 'w') as f:
-				f.write(output)
+  def _handle_output(self, output: str) -> None:
+    if self.save_output_to:
+      with open(self.save_output_to, 'w') as f:
+        f.write(output)
 
-	def _process_comments(self, comments: praw.models.comment_forest.CommentForest, depth: int = 1) -> str:
-		comments_str = ""
+  def _process_comments(self, comments: praw.models.comment_forest.CommentForest, depth: int = 1) -> str:
+    comments_str = ""
 
-		# A max_comment_depth of 0 means only the original post will be returned
-		if self.max_comment_depth == 0:
-			return comments_str
+    # A max_comment_depth of 0 means only the original post will be returned
+    if self.max_comment_depth == 0:
+      return comments_str
 
-		for comment in comments:
+    stack = [(comment, depth) for comment in comments if not isinstance(comment, praw.models.MoreComments)]
+    total_comments = len(stack)
+    processed_comments = 0
 
-			# Skip any 'MoreComments' objects
-			if isinstance(comment, praw.models.MoreComments):
-				continue
+    print(f"Processing {total_comments} comments...")
 
-			# Stop processing comments if depth exceeds max_comment_depth
-			if self.max_comment_depth not in (None, -1) and depth > self.max_comment_depth:
-				break
+    while stack:
+      comment, current_depth = stack.pop()
 
-			prefix = f"{self.comment_delim} " * depth
+      if isinstance(comment, praw.models.MoreComments):
+        continue
 
-			# Safe-guard for deleted comments where the author would be None
-			author = comment.author.name if comment.author else "[deleted]"
-			score = comment.score
-			upvotes_or_downvotes = 'upvotes' if score >= 0 else 'downvotes'
-			comment_body = re.sub(r'\n+', ' ', comment.body)  # Replace newlines to avoid breaking the tree structure
+      if self.max_comment_depth not in (None, -1) and current_depth > self.max_comment_depth:
+        continue
 
-			comments_str += f"{prefix}{author} ({score} {upvotes_or_downvotes}): {comment_body}\n"
+      prefix = f"{self.comment_delim} " * current_depth
 
-			# Recursively process the replies to each comment
-			comments_str += self._process_comments(comment.replies, depth + 1)
+      author = comment.author.name if comment.author else "[deleted]"
+      score = comment.score
+      upvotes_or_downvotes = 'upvotes' if score >= 0 else 'downvotes'
+      comment_body = re.sub(r'\n+', ' ', comment.body)  # Replace newlines to avoid breaking the tree structure
 
-		return comments_str
+      comments_str += f"{prefix}{author} ({score} {upvotes_or_downvotes}): {comment_body}\n"
+      
+      processed_comments += 1
+      print(f"Processed {processed_comments}/{total_comments} comments", end='\r')
 
-	def _process_original_post(self, thread: praw.models.Submission) -> str:
-		# Fetch the title, author, upvotes, and post text
-		# OP's info
-		self.post_data = {
-			'title': thread.title,
-			'author': thread.author.name if thread.author else "deleted",
-			'upvotes': thread.score,
-			'selftext': re.sub(r'\n+', ' ', thread.selftext),  # Replace newlines to avoid breaking the structure
-			'num_comments': thread.num_comments
-		}
+      # Add the replies to the stack with increased depth
+      stack.extend([(reply, current_depth + 1) for reply in comment.replies if not isinstance(reply, praw.models.MoreComments)])
+      total_comments += len(comment.replies)
 
-		# Ensure all comments are fetched
-		if self.max_comment_depth != 0:
-			thread.comments.replace_more(limit=None)
+    print("\nProcessing complete.")
+    return comments_str
 
-		# Start building the final output string
-		original_post_output = f"Title: {self.post_data['title']}\nAuthor: {self.post_data['author']}\nUpvotes: {self.post_data['upvotes']}\n"
-		if self.post_data['selftext']:
-			original_post_output += f"Body text: {self.post_data['selftext']}\n"
+  def _process_original_post(self, thread: praw.models.Submission) -> str:
+    # Fetch the title, author, upvotes, and post text
+    # OP's info
+    self.post_data = {
+      'title': thread.title,
+      'author': thread.author.name if thread.author else "deleted",
+      'upvotes': thread.score,
+      'selftext': re.sub(r'\n+', ' ', thread.selftext),  # Replace newlines to avoid breaking the structure
+      'num_comments': thread.num_comments
+    }
 
-		return original_post_output
+    # Ensure all comments are fetched
+    if self.max_comment_depth != 0:
+      thread.comments.replace_more(limit=None)
 
-	def textualize_post(self, urls: Union[str, List[str]]) -> Union[str, List[str]]:
-		if isinstance(urls, str):
-				urls = [urls]
+    # Start building the final output string
+    original_post_output = f"Title: {self.post_data['title']}\nAuthor: {self.post_data['author']}\nUpvotes: {self.post_data['upvotes']}\n"
+    if self.post_data['selftext']:
+      original_post_output += f"Body text: {self.post_data['selftext']}\n"
 
-		final_outputs = []
+    return original_post_output
 
-		for url in urls:
-				# PRAW auto-handles extracting the post ID from the URL
-				# https://praw.readthedocs.io/en/stable/code_overview/models/submission.html
-				thread = self._praw_reddit.submission(url=url)
+  def textualize_post(self, urls: Union[str, List[str]]) -> Union[str, List[str]]:
+    if isinstance(urls, str):
+      urls = [urls]
 
-				# Convert the original post and all the comments to text individually
-				text_post = self._process_original_post(thread)
+    final_outputs = []
 
-				# Ensure all comments are fetched
-				text_comments = self._process_comments(thread.comments)
+    for url in urls:
+      # PRAW auto-handles extracting the post ID from the URL
+      thread = self._praw_reddit.submission(url=url)
 
-				comment_header = f'\n{self.post_data["num_comments"]} Comments:\n--------\n' if self.max_comment_depth != 0 else ''
+      # Convert the original post to text
+      text_post = self._process_original_post(thread)
 
-				# Combine the original post and comments into a single string
-				final_output = text_post + comment_header + text_comments
+      # Ensure all comments are fetched
+      text_comments = ""
+      if self.max_comment_depth != 0:
+        thread.comments.replace_more(limit=None)
+        print("About to process")
+        text_comments = self._process_comments(thread.comments)
 
-				final_outputs.append(final_output)
+      comment_header = f'\n{self.post_data["num_comments"]} Comments:\n--------\n' if self.max_comment_depth != 0 else ''
 
-		if len(final_outputs) == 1:
-				return final_outputs[0]
-		return final_outputs
+      # Combine the original post and comments into a single string
+      final_output = text_post + comment_header + text_comments
+
+      final_outputs.append(final_output)
+
+    if len(final_outputs) == 1:
+      return final_outputs[0]
+    return final_outputs
