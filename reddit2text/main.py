@@ -208,3 +208,28 @@ class Reddit2Text:
         if len(final_outputs) == 1:
             return final_outputs[0]
         return final_outputs
+
+    def jsonify_post(self, urls: Union[str, List[str]]) -> list[dict] | dict:
+        if isinstance(urls, str):
+            urls = [urls]
+
+        final_outputs = []
+        for url in urls:
+            # PRAW auto-handles extracting the post ID from the URL
+            # https://praw.readthedocs.io/en/stable/code_overview/models/submission.html
+            thread = self._praw_reddit.submission(url=url)
+
+            # Convert the original post and all the comments to text individually
+            self._process_original_post(thread)
+            final_output = self.post_data
+
+            # Ensure all comments are fetched
+            text_comments = self._process_comments_to_json(thread.comments)
+            print(text_comments)
+            final_output["comments"] = text_comments
+
+            final_outputs.append(final_output)
+
+        if len(final_outputs) == 1:
+            return final_outputs[0]
+        return final_outputs
