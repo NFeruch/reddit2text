@@ -63,7 +63,7 @@ class Reddit2Text:
             with open(self.save_output_to, "w", encoding="utf-8") as f:
                 f.write(output)
 
-    def _process_comments(
+    def _process_comments_to_txt(
         self, comments: praw.models.comment_forest.CommentForest, depth: int = 1
     ) -> str:
         comments_str = ""
@@ -100,7 +100,7 @@ class Reddit2Text:
             )
 
             # Recursively process the replies to each comment
-            comments_str += self._process_comments(comment.replies, depth + 1)
+            comments_str += self._process_comments_to_txt(comment.replies, depth + 1)
 
         return comments_str
 
@@ -149,7 +149,7 @@ class Reddit2Text:
             text_post = self._post_to_text()
 
             # Ensure all comments are fetched
-            text_comments = self._process_comments(thread.comments)
+            text_comments = self._process_comments_to_txt(thread.comments)
 
             comment_header = (
                 f'\n{self.post_data["num_comments"]} Comments:\n--------\n'
