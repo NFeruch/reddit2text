@@ -15,7 +15,7 @@ class Reddit2Text:
         client_secret: str | None = None,
         user_agent: str | None = None,
         *,
-        format: Optional[Literal["txt", "json", "csv"]] = "txt",
+        output_format: Optional[Literal["txt", "json", "csv"]] = "txt",
         max_comment_depth: Optional[int] = None,
         comment_delim: Optional[str] = "|",
         save_output_to: Optional[str] = None,
@@ -46,7 +46,7 @@ class Reddit2Text:
         if not all((self.client_id, self.client_secret, self.user_agent)):
             raise ValueError("Please provide client_id, client_secret, and user_agent")
 
-        self.format = format
+        self.format = output_format
         self.max_comment_depth = max_comment_depth
         self.comment_delim = comment_delim
         self.save_output_to = save_output_to
@@ -56,6 +56,7 @@ class Reddit2Text:
             client_secret=self.client_secret,
             user_agent=self.user_agent,
         )
+        self.post_data: dict = {}
 
     def _handle_output(self, output: str) -> None:
         if self.save_output_to:
