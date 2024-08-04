@@ -24,19 +24,19 @@ class Reddit2Text:
         Parameters
         ----------
         client_id : str
-                Generated with your Reddit API app
+            Generated with your Reddit API app
         client_secret : str
-                Generated with your Reddit API app
+            Generated with your Reddit API app
         user_agent : str
-                Tells the Reddit API who you are, of the form, `<app type>:<app name>:<version> (by <your username>)`
+            Tells the Reddit API who you are, of the form, `<app type>:<app name>:<version> (by <your username>)`
         format : Literal['txt', 'json', 'csv'], optional
-                How you want the Reddit thread to be displayed, by default 'txt'
+            How you want the Reddit thread to be displayed, by default 'txt'
         max_comment_depth : int, optional
-                Maximum depth of comments to output, including the top-most comment. Choose 0 to exclude all comments, by default None or -1 to include all
+            Maximum depth of comments to output, including the top-most comment. Choose 0 to exclude all comments, by default None or -1 to include all
         comment_delim : str, optional
-                String/character used to indent comments according to their nesting level, by default "|"
+            String/character used to indent comments according to their nesting level, by default "|"
         save_output_to : str, optional
-                The location in which you want to save the output, by default None
+            The location in which you want to save the output, by default None
         """
         # Optionally fetch the credentials from the environment variables
         self.client_id = client_id or os.getenv("REDDIT_CLIENT_ID")
