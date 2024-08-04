@@ -60,7 +60,7 @@ class Reddit2Text:
 
     def _handle_output(self, output: str) -> None:
         if self.save_output_to:
-            with open(self.save_output_to, "w") as f:
+            with open(self.save_output_to, "w", encoding="utf-8") as f:
                 f.write(output)
 
     def _process_comments(
