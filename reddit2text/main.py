@@ -63,6 +63,49 @@ class Reddit2Text:
             with open(self.save_output_to, "w", encoding="utf-8") as f:
                 f.write(output)
 
+    def _process_comments_to_json(
+        self, comments: praw.models.comment_forest.CommentForest, depth: int = 1
+    ) -> list[dict]:
+        comments_json = []
+
+        if self.max_comment_depth == 0:
+            return comments_json
+
+        for comment in comments:
+            # Skip any 'MoreComments' objects
+            if isinstance(comment, praw.models.MoreComments):
+                continue
+
+            # Stop processing comments if depth exceeds max_comment_depth
+            if (
+                self.max_comment_depth not in (None, -1)
+                and depth > self.max_comment_depth
+            ):
+                break
+
+            prefix = f"{self.comment_delim} " * depth
+
+            # Safe-guard for deleted comments where the author would be None
+            author = comment.author.name if comment.author else "[deleted]"
+            score = comment.score
+            upvotes_or_downvotes = "upvotes" if score >= 0 else "downvotes"
+            comment_body = (
+                comment.body
+            )  # Replace newlines to avoid breaking the tree structure
+
+            data = {
+                "author": author,
+                "score": score,
+                "upvotes_or_downvotes": upvotes_or_downvotes,
+                "comment_body": comment_body,
+            }
+            replies = self._process_comments_to_json(comment.replies, depth + 1)
+            if replies:
+                data["replies"] = replies
+            comments_json.append(data)
+
+        return comments_json
+
     def _process_comments_to_txt(
         self, comments: praw.models.comment_forest.CommentForest, depth: int = 1
     ) -> str:
