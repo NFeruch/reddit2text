@@ -104,7 +104,7 @@ class Reddit2Text:
 
         return comments_str
 
-    def _process_original_post(self, thread: praw.models.Submission) -> str:
+    def _process_original_post(self, thread: praw.models.Submission) -> None:
         # Fetch the title, author, upvotes, and post text
         # OP's info
         self.post_data = {
@@ -121,6 +121,7 @@ class Reddit2Text:
         if self.max_comment_depth != 0:
             thread.comments.replace_more(limit=None)
 
+    def _post_to_text(self) -> str:
         # Start building the final output string
         original_post_output = (
             f"Title: {self.post_data['title']}\n"
@@ -144,7 +145,8 @@ class Reddit2Text:
             thread = self._praw_reddit.submission(url=url)
 
             # Convert the original post and all the comments to text individually
-            text_post = self._process_original_post(thread)
+            self._process_original_post(thread)
+            text_post = self._post_to_text()
 
             # Ensure all comments are fetched
             text_comments = self._process_comments(thread.comments)
