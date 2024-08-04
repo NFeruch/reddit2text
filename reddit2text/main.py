@@ -122,7 +122,11 @@ class Reddit2Text:
             thread.comments.replace_more(limit=None)
 
         # Start building the final output string
-        original_post_output = f"Title: {self.post_data['title']}\nAuthor: {self.post_data['author']}\nUpvotes: {self.post_data['upvotes']}\n"
+        original_post_output = (
+            f"Title: {self.post_data['title']}\n"
+            f"Author: {self.post_data['author']}\n"
+            f"Upvotes: {self.post_data['upvotes']}\n"
+        )
         if self.post_data["selftext"]:
             original_post_output += f"Body text: {self.post_data['selftext']}\n"
 
