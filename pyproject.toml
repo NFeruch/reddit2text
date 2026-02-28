@@ -1,0 +1,55 @@
+[build-system]
+requires = ["setuptools>=61", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "reddit2text"
+version = "0.0.9"
+description = "Convert Reddit posts to text"
+readme = "README.md"
+license = { text = "Apache-2.0" }
+authors = [
+    { name = "Nicholas Hansen-Feruch", email = "nicholas.feruch@gmail.com" },
+]
+keywords = [
+    "python", "reddit", "text conversion", "reddit api", "praw",
+    "reddit to text", "reddit comments", "social media analysis",
+]
+classifiers = [
+    "Development Status :: 3 - Alpha",
+    "Intended Audience :: Developers",
+    "Topic :: Software Development :: Libraries :: Python Modules",
+    "Programming Language :: Python :: 3",
+    "License :: OSI Approved :: Apache Software License",
+    "Operating System :: OS Independent",
+]
+requires-python = ">=3.6"
+dependencies = [
+    "praw>=7.0.0",
+    "python-dotenv>=1.0.0",
+]
+
+[project.optional-dependencies]
+dev = [
+    "ruff>=0.4.0",
+    "flake8>=7.0.0",
+    "mypy>=1.0.0",
+]
+
+[tool.setuptools.packages.find]
+where = ["."]
+include = ["reddit2text*"]
+
+[tool.ruff]
+target-version = "py310"
+line-length = 79
+exclude = [".git", "__pycache__", ".mypy_cache", "build", "dist", "*.egg-info", "venv", ".venv"]
+
+[tool.ruff.format]
+quote-style = "double"
+
+[tool.mypy]
+python_version = "3.10"
+warn_return_any = true
+warn_unused_ignores = true
+ignore_missing_imports = true

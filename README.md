@@ -23,6 +23,8 @@ Easy install using pip
 pip3 install reddit2text
 ```
 
+**Developing from source:** clone the repo and run `make` — see [CONTRIBUTING.md](CONTRIBUTING.md).
+
 <a id="quickstart"></a>
 
 ## Quickstart
@@ -30,7 +32,10 @@ pip3 install reddit2text
 > Here's a [visual step-by-step guide I created](https://scribehow.com/shared/Create_your_Reddit_API_app__sanm5Eo2Q_iudzfhFZLKJg) to do this! Alternatively, you can look at [Reddit's API documentation](https://www.reddit.com/wiki/api).
 
 
-**Then**, replace the `client_id`, `client_secret`, and `user_agent` with your credentials.
+**Then**, add your credentials. When using env vars: copy `.env.example` to `.env` and fill in your Reddit app values:
+```sh
+cp .env.example .env
+```
 
 The user agent can be anything you like, but we recommend following this convention according to Reddit's guidelines: `'<app type>:<app name>:<version> (by <your username>)'`
 
@@ -106,7 +111,7 @@ r2t = Reddit2Text(
 <a id="contributions"></a>
 
 ## Contributions
-Contributions to reddit2text are always welcomed! I'm just a person that made something I think is useful, so any help is appreciated. You can always submit a pull requests or add an issue to the GitHub repository.
+Contributions are welcome. See [CONTRIBUTING.md](CONTRIBUTING.md) for development setup and how to run linting before submitting a PR.
 
 <a id="license"></a>
 
