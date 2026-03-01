@@ -41,6 +41,12 @@ dev = [
 where = ["."]
 include = ["reddit2text*"]
 
+[tool.pytest.ini_options]
+markers = [
+    "integration: tests that call the real Reddit API (run with: pytest -m integration)",
+]
+addopts = "-m 'not integration'"
+
 [tool.ruff]
 target-version = "py311"
 line-length = 79

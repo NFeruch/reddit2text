@@ -36,3 +36,4 @@ lint:
 # test: run pytest against tests/ using fixtures only (no live API).
 test:
 	.venv/bin/pytest tests/ -v
+	.venv/bin/pytest tests/ -m integration -v

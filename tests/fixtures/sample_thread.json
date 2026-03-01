@@ -1,0 +1,30 @@
+{
+  "post": {
+    "title": "Sample post title",
+    "author": "test_user",
+    "upvotes": 42,
+    "selftext": "This is the post body.",
+    "num_comments": 2
+  },
+  "comments": [
+    {
+      "author": "commenter_one",
+      "score": 10,
+      "body": "First top-level comment.",
+      "replies": [
+        {
+          "author": "commenter_two",
+          "score": 2,
+          "body": "A reply to the first comment.",
+          "replies": []
+        }
+      ]
+    },
+    {
+      "author": "[deleted]",
+      "score": -1,
+      "body": "Deleted user comment.",
+      "replies": []
+    }
+  ]
+}
